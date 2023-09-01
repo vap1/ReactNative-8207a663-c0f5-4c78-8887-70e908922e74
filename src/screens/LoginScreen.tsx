@@ -1,41 +1,58 @@
 
 import React, { useState } from 'react';
-import { View, TextInput, Button } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { TextInputComponent, ButtonComponent } from '../components';
+import { UserLoginRequest } from '../types/Types';
 
-const LoginScreen = () => {
+const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    console.log('Step 2: User submits the login form');
-    console.log('Email:', email);
-    console.log('Password:', password);
+    console.log('LoginScreen: handleLogin - Start');
+    console.log('LoginScreen: handleLogin - Email:', email);
+    console.log('LoginScreen: handleLogin - Password:', password);
 
-    // Perform API call for user login
-    // ...
+    // Perform login API call here
 
-    // Handle API response
-    // ...
+    console.log('LoginScreen: handleLogin - End');
   };
 
-  console.log('Step 1: User visits the Login Screen');
+  console.log('LoginScreen: Render - Start');
 
   return (
-    <View>
-      <TextInput
+    <View style={styles.container}>
+      <Text style={styles.title}>Login</Text>
+      <TextInputComponent
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
       />
-      <TextInput
+      <TextInputComponent
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button title="Login" onPress={handleLogin} />
+      <ButtonComponent onPress={handleLogin} title="Login" />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+});
+
+console.log('LoginScreen: Render - End');
 
 export default LoginScreen;
