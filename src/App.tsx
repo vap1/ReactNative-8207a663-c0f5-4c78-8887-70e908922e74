@@ -1,27 +1,34 @@
 
-import React, { useEffect } from 'react';
+console.log('App.tsx: Start');
+
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { UserContextProvider } from './contexts/UserContext';
-import { AppNavigator } from './navigation/AppNavigator';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const Stack = createStackNavigator();
+import RegistrationScreen from './screens/RegistrationScreen';
+import LoginScreen from './screens/LoginScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import AdminUserDetailsScreen from './screens/AdminUserDetailsScreen';
+
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-const App = () => {
-  useEffect(() => {
-    console.log('App started');
-    // Additional initialization logic can be added here
-  }, []);
+const App: React.FC = () => {
+  console.log('App.tsx: Start');
 
   return (
     <NavigationContainer>
-      <UserContextProvider>
-        <AppNavigator />
-      </UserContextProvider>
+      <Tab.Navigator>
+        <Tab.Screen name="Profile" component={ProfileScreen} />
+        <Tab.Screen name="Admin User Details" component={AdminUserDetailsScreen} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
+
+  console.log('App.tsx: End');
 };
+
+console.log('App.tsx: End');
 
 export default App;
