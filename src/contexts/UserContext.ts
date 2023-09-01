@@ -1,86 +1,88 @@
 
+console.log("UserContext.ts: Start");
+
 import React, { createContext, useState } from 'react';
 import { User, UserRegistrationRequest, UserRegistrationResponse, UserLoginRequest, UserLoginResponse, UserProfileRequest, UserProfileResponse, UserProfileUpdateRequest, UserProfileUpdateResponse, AdminUserDetailsRequest, AdminUserDetailsResponse } from '../types/Types';
 import { registerUser, loginUser, getUserProfile, updateUserProfile, getAdminUserDetails } from '../apis/UserApi';
 
 interface UserContextProps {
   user: User | null;
-  registerUser: (request: UserRegistrationRequest) => void;
-  loginUser: (request: UserLoginRequest) => void;
-  getUserProfile: () => void;
-  updateUserProfile: (request: UserProfileUpdateRequest) => void;
-  getAdminUserDetails: () => void;
+  registerUser: (request: UserRegistrationRequest) => Promise<UserRegistrationResponse>;
+  loginUser: (request: UserLoginRequest) => Promise<UserLoginResponse>;
+  getUserProfile: (request: UserProfileRequest) => Promise<UserProfileResponse>;
+  updateUserProfile: (request: UserProfileUpdateRequest) => Promise<UserProfileUpdateResponse>;
+  getAdminUserDetails: (request: AdminUserDetailsRequest) => Promise<AdminUserDetailsResponse>;
 }
 
 export const UserContext = createContext<UserContextProps>({
   user: null,
-  registerUser: () => {},
-  loginUser: () => {},
-  getUserProfile: () => {},
-  updateUserProfile: () => {},
-  getAdminUserDetails: () => {},
+  registerUser: () => Promise.reject(),
+  loginUser: () => Promise.reject(),
+  getUserProfile: () => Promise.reject(),
+  updateUserProfile: () => Promise.reject(),
+  getAdminUserDetails: () => Promise.reject(),
 });
 
 export const UserProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
   const handleRegisterUser = async (request: UserRegistrationRequest) => {
+    console.log("UserContext.ts: handleRegisterUser");
     try {
-      console.log('Registering user...');
-      const response: UserRegistrationResponse = await registerUser(request);
-      console.log('User registration successful:', response);
-      // Handle success logic here
+      const response = await registerUser(request);
+      console.log("UserContext.ts: handleRegisterUser - response", response);
+      return response;
     } catch (error) {
-      console.error('User registration failed:', error);
-      // Handle error logic here
+      console.error("UserContext.ts: handleRegisterUser - error", error);
+      throw error;
     }
   };
 
   const handleLoginUser = async (request: UserLoginRequest) => {
+    console.log("UserContext.ts: handleLoginUser");
     try {
-      console.log('Logging in user...');
-      const response: UserLoginResponse = await loginUser(request);
-      console.log('User login successful:', response);
-      // Handle success logic here
+      const response = await loginUser(request);
+      console.log("UserContext.ts: handleLoginUser - response", response);
+      return response;
     } catch (error) {
-      console.error('User login failed:', error);
-      // Handle error logic here
+      console.error("UserContext.ts: handleLoginUser - error", error);
+      throw error;
     }
   };
 
-  const handleGetUserProfile = async () => {
+  const handleGetUserProfile = async (request: UserProfileRequest) => {
+    console.log("UserContext.ts: handleGetUserProfile");
     try {
-      console.log('Fetching user profile...');
-      const response: UserProfileResponse = await getUserProfile();
-      console.log('User profile fetched:', response);
-      // Handle success logic here
+      const response = await getUserProfile(request);
+      console.log("UserContext.ts: handleGetUserProfile - response", response);
+      return response;
     } catch (error) {
-      console.error('Failed to fetch user profile:', error);
-      // Handle error logic here
+      console.error("UserContext.ts: handleGetUserProfile - error", error);
+      throw error;
     }
   };
 
   const handleUpdateUserProfile = async (request: UserProfileUpdateRequest) => {
+    console.log("UserContext.ts: handleUpdateUserProfile");
     try {
-      console.log('Updating user profile...');
-      const response: UserProfileUpdateResponse = await updateUserProfile(request);
-      console.log('User profile updated:', response);
-      // Handle success logic here
+      const response = await updateUserProfile(request);
+      console.log("UserContext.ts: handleUpdateUserProfile - response", response);
+      return response;
     } catch (error) {
-      console.error('Failed to update user profile:', error);
-      // Handle error logic here
+      console.error("UserContext.ts: handleUpdateUserProfile - error", error);
+      throw error;
     }
   };
 
-  const handleGetAdminUserDetails = async () => {
+  const handleGetAdminUserDetails = async (request: AdminUserDetailsRequest) => {
+    console.log("UserContext.ts: handleGetAdminUserDetails");
     try {
-      console.log('Fetching admin user details...');
-      const response: AdminUserDetailsResponse = await getAdminUserDetails();
-      console.log('Admin user details fetched:', response);
-      // Handle success logic here
+      const response = await getAdminUserDetails(request);
+      console.log("UserContext.ts: handleGetAdminUserDetails - response", response);
+      return response;
     } catch (error) {
-      console.error('Failed to fetch admin user details:', error);
-      // Handle error logic here
+      console.error("UserContext.ts: handleGetAdminUserDetails - error", error);
+      throw error;
     }
   };
 
@@ -99,3 +101,5 @@ export const UserProvider: React.FC = ({ children }) => {
     </UserContext.Provider>
   );
 };
+
+console.log("UserContext.ts: End");
