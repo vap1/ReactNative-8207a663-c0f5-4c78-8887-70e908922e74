@@ -1,23 +1,22 @@
 
 import { UserRegistrationRequest, UserRegistrationResponse } from '../types/Types';
 
+console.log('UserRegistrationApi.ts: Start');
+
 export const registerUser = async (request: UserRegistrationRequest): Promise<UserRegistrationResponse> => {
-  try {
-    console.log('Step 1: Starting user registration process');
-    console.log('Request:', request);
+  console.log('UserRegistrationApi.ts: registerUser - Start');
+  console.log('UserRegistrationApi.ts: request:', request);
 
-    // Generate random data for demonstration purposes
-    const response: UserRegistrationResponse = {
-      success: true,
-      message: 'User registration successful'
-    };
+  // Generate random data for the response
+  const response: UserRegistrationResponse = {
+    success: true,
+    message: 'User registered successfully',
+  };
 
-    console.log('Step 2: User registration successful');
-    console.log('Response:', response);
+  console.log('UserRegistrationApi.ts: registerUser - End');
+  console.log('UserRegistrationApi.ts: response:', response);
 
-    return response;
-  } catch (error) {
-    console.error('Error occurred during user registration:', error);
-    throw error;
-  }
+  return response;
 };
+
+console.log('UserRegistrationApi.ts: End');
