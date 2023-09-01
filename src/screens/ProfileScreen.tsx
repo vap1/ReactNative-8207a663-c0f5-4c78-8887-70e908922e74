@@ -1,70 +1,68 @@
 
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { UserContext } from '../contexts/UserContext';
 import { UserProfileRequest, UserProfileResponse } from '../types/Types';
 
 const ProfileScreen: React.FC = () => {
-  const [userProfile, setUserProfile] = useState<UserProfileResponse | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { user, getUserProfile } = useContext(UserContext);
 
   useEffect(() => {
-    console.log('Fetching user profile...');
-    setIsLoading(true);
+    console.log('ProfileScreen.tsx: useEffect - Start');
 
-    // Make API call to retrieve user profile
     const fetchUserProfile = async () => {
+      console.log('ProfileScreen.tsx: fetchUserProfile - Start');
+
       try {
         const request: UserProfileRequest = {
           token: 'user_token', // Replace with actual user token
         };
 
-        const response = await fetch('/api/profile', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(request),
-        });
-
-        const data: UserProfileResponse = await response.json();
-        setUserProfile(data);
-        setIsLoading(false);
-        console.log('User profile fetched successfully:', data);
+        const response: UserProfileResponse = await getUserProfile(request);
+        console.log('ProfileScreen.tsx: fetchUserProfile - Response:', response);
       } catch (error) {
-        console.error('Error fetching user profile:', error);
-        setIsLoading(false);
+        console.error('ProfileScreen.tsx: fetchUserProfile - Error:', error);
       }
+
+      console.log('ProfileScreen.tsx: fetchUserProfile - End');
     };
 
     fetchUserProfile();
+
+    console.log('ProfileScreen.tsx: useEffect - End');
   }, []);
 
-  const handleSaveChanges = () => {
-    console.log('Saving changes...');
-    // Implement logic to save changes to user profile
-  };
+  console.log('ProfileScreen.tsx: Render - Start');
 
   return (
-    <View>
-      {isLoading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <>
-          <Text>Name: {userProfile?.user.name}</Text>
-          <Text>Email: {userProfile?.user.email}</Text>
-          <TextInput
-            placeholder="Enter contact info"
-            onChangeText={(text) => console.log('Contact info changed:', text)}
-          />
-          <TextInput
-            placeholder="Enter address"
-            onChangeText={(text) => console.log('Address changed:', text)}
-          />
-          <Button title="Save Changes" onPress={handleSaveChanges} />
-        </>
+    <View style={styles.container}>
+      <Text style={styles.title}>Profile Screen</Text>
+      {user && (
+        <View>
+          <Text>Name: {user.name}</Text>
+          <Text>Email: {user.email}</Text>
+          <Text>Contact Info: {user.contactInfo}</Text>
+          <Text>Address: {user.address}</Text>
+          <Text>Profile Picture: {user.profilePicture}</Text>
+        </View>
       )}
     </View>
   );
+
+  console.log('ProfileScreen.tsx: Render - End');
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+});
 
 export default ProfileScreen;
