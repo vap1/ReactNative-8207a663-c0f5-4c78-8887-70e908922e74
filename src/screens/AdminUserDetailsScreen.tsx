@@ -1,34 +1,42 @@
 
-import React, { useEffect, useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { UserContext } from '../contexts/UserContext';
-import { AdminUserDetailsResponse, AdminUserDetailsRequest } from '../types/Types';
-import { getAdminUserDetails } from '../apis/AdminUserDetailsApi';
+import { AdminUserDetailsRequest, AdminUserDetailsResponse } from '../types/Types';
 
 const AdminUserDetailsScreen: React.FC = () => {
-  const { token } = useContext(UserContext);
+  console.log('AdminUserDetailsScreen.tsx: Start');
+
+  const { getAdminUserDetails, user } = useContext(UserContext);
 
   useEffect(() => {
-    console.log('Step 1: AdminUserDetailsScreen - useEffect');
-    console.log('Fetching admin user details...');
+    console.log('AdminUserDetailsScreen.tsx: useEffect - Start');
 
     const fetchData = async () => {
-      try {
+      console.log('AdminUserDetailsScreen.tsx: useEffect - fetchData - Start');
+
+      if (user) {
         const request: AdminUserDetailsRequest = {
-          token: token,
+          token: user.token,
         };
 
-        const response: AdminUserDetailsResponse = await getAdminUserDetails(request);
-
-        console.log('Step 2: AdminUserDetailsScreen - fetchData');
-        console.log('Admin user details:', response.users);
-      } catch (error) {
-        console.error('Error fetching admin user details:', error);
+        try {
+          const response: AdminUserDetailsResponse = await getAdminUserDetails(request);
+          console.log('AdminUserDetailsScreen.tsx: useEffect - fetchData - response', response);
+        } catch (error) {
+          console.error('AdminUserDetailsScreen.tsx: useEffect - fetchData - error', error);
+        }
       }
+
+      console.log('AdminUserDetailsScreen.tsx: useEffect - fetchData - End');
     };
 
     fetchData();
-  }, [token]);
+
+    console.log('AdminUserDetailsScreen.tsx: useEffect - End');
+  }, [getAdminUserDetails, user]);
+
+  console.log('AdminUserDetailsScreen.tsx: End');
 
   return (
     <View>
