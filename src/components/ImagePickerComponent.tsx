@@ -1,31 +1,35 @@
 
 import React, { useState } from 'react';
-import { View, Button, Image, Alert } from 'react-native';
+import { View, Button, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { ImagePickerResult } from 'expo-image-picker';
 
 const ImagePickerComponent: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const handleImagePicker = async () => {
+    console.log('ImagePickerComponent.tsx: handleImagePicker - Start');
+
     try {
       const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      console.log('Permission Result:', permissionResult);
+      console.log('ImagePickerComponent.tsx: handleImagePicker - Permission Result:', permissionResult);
 
-      if (!permissionResult.granted) {
-        Alert.alert('Permission Denied', 'Please allow access to your media library to select an image.');
+      if (permissionResult.granted === false) {
+        console.log('ImagePickerComponent.tsx: handleImagePicker - Permission not granted');
         return;
       }
 
-      const imagePickerResult = await ImagePicker.launchImageLibraryAsync();
-      console.log('Image Picker Result:', imagePickerResult);
+      const imagePickerResult: ImagePickerResult = await ImagePicker.launchImageLibraryAsync();
+      console.log('ImagePickerComponent.tsx: handleImagePicker - Image Picker Result:', imagePickerResult);
 
       if (!imagePickerResult.cancelled) {
         setSelectedImage(imagePickerResult.uri);
       }
     } catch (error) {
-      console.error('Image Picker Error:', error);
-      Alert.alert('Error', 'An error occurred while selecting an image.');
+      console.error('ImagePickerComponent.tsx: handleImagePicker - Error:', error);
     }
+
+    console.log('ImagePickerComponent.tsx: handleImagePicker - End');
   };
 
   return (
