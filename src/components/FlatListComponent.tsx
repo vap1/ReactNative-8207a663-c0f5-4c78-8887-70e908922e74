@@ -1,46 +1,34 @@
 
 import React from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
+import { User } from '../types/Types';
 
-interface ListItem {
-  id: string;
-  name: string;
-  email: string;
-  contactInfo?: string;
-  address?: string;
-  profilePicture?: string;
-}
+const FlatListComponent: React.FC<{ users: User[] }> = ({ users }) => {
+  console.log('FlatListComponent: Start');
 
-interface FlatListComponentProps {
-  users: ListItem[];
-}
-
-const FlatListComponent: React.FC<FlatListComponentProps> = ({ users }) => {
-  console.log('Rendering FlatListComponent');
-
-  const renderItem = ({ item }: { item: ListItem }) => {
-    console.log('Rendering ListItem:', item.id);
+  const renderItem = ({ item }: { item: User }) => {
+    console.log('FlatListComponent: renderItem - Start');
+    console.log('FlatListComponent: renderItem - Item:', item);
 
     return (
       <View>
         <Text>Name: {item.name}</Text>
         <Text>Email: {item.email}</Text>
-        {item.contactInfo && <Text>Contact Info: {item.contactInfo}</Text>}
-        {item.address && <Text>Address: {item.address}</Text>}
-        {item.profilePicture && <Text>Profile Picture: {item.profilePicture}</Text>}
+        <Text>Contact Info: {item.contactInfo}</Text>
+        <Text>Address: {item.address}</Text>
+        <Text>Profile Picture: {item.profilePicture}</Text>
       </View>
     );
   };
 
+  console.log('FlatListComponent: End');
+
   return (
-    <View>
-      <Text>Flat List Component</Text>
-      <FlatList
-        data={users}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
-    </View>
+    <FlatList
+      data={users}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.email}
+    />
   );
 };
 
