@@ -2,18 +2,15 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-interface ButtonProps {
-  title: string;
-  onPress: () => void;
-}
+const ButtonComponent: React.FC<{ onPress: () => void; title: string }> = ({ onPress, title }) => {
+  console.log('ButtonComponent.tsx: Start');
 
-const ButtonComponent: React.FC<ButtonProps> = ({ title, onPress }) => {
   const handlePress = () => {
-    console.log('Button pressed');
+    console.log('ButtonComponent.tsx: handlePress');
     onPress();
   };
 
-  console.log('Rendering ButtonComponent');
+  console.log('ButtonComponent.tsx: End');
 
   return (
     <TouchableOpacity style={styles.button} onPress={handlePress}>
@@ -24,14 +21,14 @@ const ButtonComponent: React.FC<ButtonProps> = ({ title, onPress }) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: '#007AFF',
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
   },
   buttonText: {
-    color: 'white',
+    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
   },
